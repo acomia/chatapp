@@ -1,2 +1,7 @@
+export {default as Splash} from './Splash'
 export {default as Login} from './Login'
 export {default as Register} from './Register'
+export {default as Home} from './Home'
+export {default as NewChat} from './NewChat'
+export {default as ChatConvo} from './ChatConvo'
+export {default as Profile} from './Profile'

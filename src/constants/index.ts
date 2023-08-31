@@ -216,3 +216,13 @@ export const avatars = [
       title: "Avatar24",
     },
   ];
+
+  export const dummySharedFiles = [
+    'https://i2-prod.mirror.co.uk/incoming/article17369968.ece/ALTERNATES/s1200c/6_Blue-baby-dummy.jpg',
+    'https://www.thedesignwork.com/wp-content/uploads/2011/10/Random-Pictures-of-Conceptual-and-Creative-Ideas-01.jpg',
+    'https://www.thedesignwork.com/wp-content/uploads/2011/10/Random-Pictures-of-Conceptual-and-Creative-Ideas-08.jpg',
+    'https://www.thedesignwork.com/wp-content/uploads/2011/10/Random-Pictures-of-Conceptual-and-Creative-Ideas-07.jpg',
+    'https://www.thedesignwork.com/wp-content/uploads/2011/10/Random-Pictures-of-Conceptual-and-Creative-Ideas-09.jpg',
+    'https://www.thedesignwork.com/wp-content/uploads/2011/10/Random-Pictures-of-Conceptual-and-Creative-Ideas-05.jpg',
+    'https://www.thedesignwork.com/wp-content/uploads/2011/10/Random-Pictures-of-Conceptual-and-Creative-Ideas-15.jpg'
+  ]

@@ -9,22 +9,48 @@ import {LoginBG, LoginLogo, facebook, google} from '@all/assets';
 import {UserInput} from '@all/components';
 import {LoginScreenNavigationProp} from '@all/types/NavigationTypes';
 import {signInWithEmailAndPassword} from 'firebase/auth';
-import {firebaseAuth} from '@all/config/firebase.config';
+import {firebaseAuth, firestoreDB} from '@all/config/firebase.config';
+import {doc, getDoc} from 'firebase/firestore';
+import {useAppDispatch} from '@all/hooks';
+import {setUser} from '@all/slices';
 
 const Login = ({navigation}: LoginScreenNavigationProp) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailValidationStatus, setEmailValidationStatus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [hasError, setHasError] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const handleLogin = async () => {
     if (emailValidationStatus && email !== '') {
-      await signInWithEmailAndPassword(firebaseAuth, email, password).then(
-        userCred => {
+      await signInWithEmailAndPassword(firebaseAuth, email, password)
+        .then(userCred => {
           if (userCred) {
-            console.log('User: ', userCred.user.uid);
+            getDoc(doc(firestoreDB, 'users', userCred.user.uid)).then(
+              docSnap => {
+                if (docSnap.exists()) {
+                  dispatch(setUser(docSnap.data()));
+                }
+              },
+            );
           }
-        },
-      );
+        })
+        .catch(error => {
+          console.log(error);
+          if (error.message.includes('wrong-password')) {
+            setHasError(true);
+            setErrorMessage('Password is incorrect!');
+          }
+          if (error.message.includes('user-not-found')) {
+            setHasError(true);
+            setErrorMessage('User does not exist!');
+          }
+          setTimeout(() => {
+            setHasError(false);
+          }, 2000);
+        });
     }
   };
 
@@ -46,6 +72,12 @@ const Login = ({navigation}: LoginScreenNavigationProp) => {
           resizeMode="contain"
         />
         <Text className="font-bold text-lg mb-10">Welcome Back</Text>
+        {/* Error message */}
+        {hasError && (
+          <Text className="text-sm text-red-500 font-semibold">
+            {errorMessage}
+          </Text>
+        )}
         <UserInput
           placeholder="Email"
           onValueChange={setEmail}
